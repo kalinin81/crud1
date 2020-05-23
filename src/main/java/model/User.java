@@ -29,6 +29,10 @@ public class User {
         this.password = password;
         this.email = email;
     }
+    public User(Long id, String login, String password, String email) {
+        this(login, password, email);
+        this.id = id;
+    }
 
     public String getLogin() {
         return login;
@@ -55,5 +59,8 @@ public class User {
     }
     public Long getId() {
         return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -1,7 +1,7 @@
 package servlet;
 
-//import com.google.gson.Gson;
-
+import DAO.UserJdbcDao;
+import model.User;
 import service.UserService;
 
 import javax.servlet.ServletException;
@@ -10,44 +10,43 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet(value = "/")
 public class UserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        req.setAttribute("users", UserService.getInstance().getAllUsers());
-        req.getRequestDispatcher("/user.jsp").forward(req, resp);
-
 /*
-        Gson gson = new Gson();
-        String json = "";
-        if (req.getPathInfo().contains("all")) {
-            json = gson.toJson(DailyReportService.getInstance().getAllDailyReports());
-        } else if (req.getPathInfo().contains("last")) {
-            //json = gson.toJson(DailyReportService.getInstance().getLastReport());
-            json = gson.toJson(DailyReportService.getInstance().getReportNewDay());
-        }
-        resp.getWriter().write(json);
-        resp.setStatus(200);
+        UserJdbcDao userJdbcDao = UserJdbcDao.getInstance();
+        UserService userService = UserService.getInstance("fff");
 */
+        String className = req.getParameter("className");
+        if (className == null) {
+            className = "DAO.UserJdbcDao";
+        }
+        req.setAttribute("users", UserService.getInstance(className).getAllUsers());
+        req.getRequestDispatcher("/user.jsp").forward(req, resp);
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getParameter("add") != null) {
-            UserService.getInstance().addNewUser(req.getParameter("login"), req.getParameter("password"), req.getParameter("email"));
-        } else if (req.getParameter("edit") != null) {
-            UserService.getInstance().editUser(req.getParameter("login"), req.getParameter("password"), req.getParameter("email"));
-        } else if (req.getParameter("delete") != null) {
-            UserService.getInstance().deleteUser(req.getParameter("login"));
+        String className = req.getParameter("className");
+        String login = req.getParameter("login");
+        String password = req.getParameter("password");
+        String email = req.getParameter("email");
+        try {
+            if (req.getParameter("add") != null) {
+                UserService.getInstance(className).addNewUser(login, password, email);
+            } else if (req.getParameter("edit") != null) {
+                UserService.getInstance(className).editUser(login, password, email);
+            } else if (req.getParameter("delete") != null) {
+                UserService.getInstance(className).deleteUser(login);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         resp.setStatus(200);
-        req.setAttribute("users", UserService.getInstance().getAllUsers());
+        req.setAttribute("users", UserService.getInstance(className).getAllUsers());
         req.getRequestDispatcher("/user.jsp").forward(req, resp);
-
     }
 
     @Override
