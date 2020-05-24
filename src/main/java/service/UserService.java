@@ -20,11 +20,14 @@ public class UserService {
             if (userService == null) {
                 userService = new UserService();
             }
+            userService.userDao = UserDaoFactory.getUserDao(className);
+/*
             if (className.equals("DAO.UserJdbcDao")) {
                 userService.userDao = UserJdbcDao.getInstance();
             } else {
                 userService.userDao = UserHibernateDao.getInstance();
             }
+*/
         } catch (Exception e) {
             e.printStackTrace();
         }
