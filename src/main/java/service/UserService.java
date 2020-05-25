@@ -19,6 +19,12 @@ public class UserService {
     public List<User> getAllUsers() {
         return userDao.read();
     }
+    public User getUser(String login) {
+        return userDao.read(login);
+    }
+    public User getUser(Long id) {
+        return userDao.read(id);
+    }
     public Long addNewUser(String login, String password, String email) {
         Long id = 0L;
         if (!userDao.existUser(login)) {
@@ -26,15 +32,15 @@ public class UserService {
         }
         return id;
     }
-    public Long editUser(String login, String password, String email) {
-        Long id = 0L;
-        if (userDao.existUser(login)) {
-            id = userDao.update(login, password, email);
+    public Long editUser(Long id, String login, String password, String email) {
+        //Long id = 0L;
+        if (userDao.existUser(id)) {
+            id = userDao.update(id, login, password, email);
         }
         return id;
     }
-    public void deleteUser(String login) {
-        User user = userDao.read(login);
+    public void deleteUser(Long id) {
+        User user = userDao.read(id);
         if (user != null) {
             userDao.delete(user);
         }

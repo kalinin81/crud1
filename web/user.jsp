@@ -12,14 +12,12 @@
     <title>User</title>
 </head>
 <body>
-<form action="/" method="post">
+<form action="/add" method="post">
     login: <input type="text" name="login"/>
     Password: <input type="text" name="password"/>
     email: <input type="text" name="email"/>
     <br>
     <input type="submit" name="add" value="add1">
-    <input type="submit" name="edit" value="edit1">
-    <input type="submit" name="delete" value="delete1">
 </form>
 <br>
 <table>
@@ -35,6 +33,16 @@
             <td><c:out value="${user.login}"/></td>
             <td><c:out value="${user.password}"/></td>
             <td><c:out value="${user.email}"/></td>
+            <td>
+                <form action="/edit" method="get">
+                    <button type="submit" name="id" value="${user.id}">edit</button>
+                </form>
+            </td>
+            <td>
+                <form action="/delete" method="post">
+                    <button type="submit" name="id" value="${user.id}">delete</button>
+                </form>
+            </td>
         </tr>
     </c:forEach>
 </table>

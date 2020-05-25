@@ -33,10 +33,11 @@ public class UserDao {
         //}
         return id;
     }
-    public Long update(String login, String password, String email) {
-        Long id = 0L;
-        User user = read(login);
+    public Long update(Long id, String login, String password, String email) {
+        //Long id = 0L;
+        User user = read(id);
         if (user != null) {
+            user.setLogin(login);
             user.setPassword(password);
             user.setEmail(email);
             Session session = sessionFactory.openSession();
@@ -44,7 +45,7 @@ public class UserDao {
             session.update(user);
             transaction.commit();
             session.close();
-            id  = user.getId();
+            //id  = user.getId();
         }
         return id;
     }
@@ -64,6 +65,9 @@ public class UserDao {
         session.close();
         return users;
     }
+    public boolean existUser(Long id) {
+        return read(id) != null;
+    }
     public boolean existUser(String login) {
         return read(login) != null;
     }
@@ -72,6 +76,17 @@ public class UserDao {
         Criteria criteria = session.createCriteria(User.class);
         criteria.add(Restrictions.eq("login", login));
         User user = (User) criteria.uniqueResult();
+        session.close();
+        return user;
+    }
+    public User read(Long id) {
+        Session session = sessionFactory.openSession();
+        User user = (User) session.get(User.class, id);
+/*
+        Criteria criteria = session.createCriteria(User.class);
+        criteria.add(Restrictions.eq("login", login));
+        User user = (User) criteria.uniqueResult();
+*/
         session.close();
         return user;
     }
