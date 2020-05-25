@@ -26,7 +26,7 @@ public class DBHelper {
 
     public static Connection getMysqlConnection() {
         if (connection == null) {
-            connection = createMysqlConnection();
+            connection = getConnection();
         }
         return connection;
     }
@@ -54,7 +54,8 @@ public class DBHelper {
         return configuration.buildSessionFactory(serviceRegistry);
     }
 
-    private static Connection createMysqlConnection() {
+
+    private static Connection getConnection() {
         try {
             DriverManager.registerDriver((Driver) Class.forName("com.mysql.jdbc.Driver").newInstance());
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bank?serverTimezone=Europe/Moscow","root","root");
