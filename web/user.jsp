@@ -12,12 +12,12 @@
     <title>User</title>
 </head>
 <body>
-<form action="/" method="post">
+<form action="/add" method="post">
     login: <input type="text" name="login"/>
     Password: <input type="text" name="password"/>
     email: <input type="text" name="email"/>
     <br>
-    <input type="submit" name="add" value="add1">
+    <button type="submit">add</button>
 </form>
 <br>
 <table>

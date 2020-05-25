@@ -15,12 +15,20 @@ import java.sql.SQLException;
 public class DBHelper {
 
     private static SessionFactory sessionFactory;
+    private static Connection connection;
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             sessionFactory = createSessionFactory();
         }
         return sessionFactory;
+    }
+
+    public static Connection getMysqlConnection() {
+        if (connection == null) {
+            connection = getConnection();
+        }
+        return connection;
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -37,7 +45,6 @@ public class DBHelper {
         configuration.setProperty("hibernate.hbm2ddl.auto", "validate");
         return configuration;
     }
-
     private static SessionFactory createSessionFactory() {
         Configuration configuration = getMySqlConfiguration();
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
@@ -46,7 +53,8 @@ public class DBHelper {
         return configuration.buildSessionFactory(serviceRegistry);
     }
 
-    public static Connection getMysqlConnection() {
+
+    private static Connection getConnection() {
         try {
             DriverManager.registerDriver((Driver) Class.forName("com.mysql.jdbc.Driver").newInstance());
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bank?serverTimezone=Europe/Moscow","root","root");

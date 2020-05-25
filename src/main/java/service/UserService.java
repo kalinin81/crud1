@@ -15,7 +15,8 @@ public class UserService {
     private static UserService userService;
     private UserDao userDao;
 
-    public static UserService getInstance(String className) {
+    public static UserService getInstance() {
+        String className = "DAO.UserHibernateDao";
         try {
             if (userService == null) {
                 userService = new UserService();
@@ -39,12 +40,11 @@ public class UserService {
         }
         return users;
     }
-    public User getUser(String login) {
-        return userDao.read(login);
-    }
+
     public User getUser(Long id) {
         return userDao.read(id);
     }
+
     public Long addNewUser(String login, String password, String email) {
         Long id = 0L;
         if (!userDao.existUser(login)) {
@@ -52,12 +52,8 @@ public class UserService {
         }
         return id;
     }
-    public Long editUser(String login, String password, String email) throws SQLException {
-        Long id = 0L;
-        if (userDao.existUser(login)) {
-            id = userDao.update(login, password, email);
+
     public Long editUser(Long id, String login, String password, String email) {
-        //Long id = 0L;
         if (userDao.existUser(id)) {
             id = userDao.update(id, login, password, email);
         }
