@@ -58,13 +58,17 @@ public class UserJdbcDao implements UserDao{
     }
 
     @Override
-    public List<User> read() throws SQLException {
-        Statement stmt = connection.createStatement();
-        stmt.execute("select * from crud1.users");
-        ResultSet result = stmt.getResultSet();
+    public List<User> read() {
         List<User> list = new ArrayList<>();
-        while (result.next()) {
-            list.add(new User(result.getString("login"), result.getString("password"), result.getString("email")));
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.execute("select * from crud1.users");
+            ResultSet result = stmt.getResultSet();
+            while (result.next()) {
+                list.add(new User(result.getString("login"), result.getString("password"), result.getString("email")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return list;
     }
@@ -79,17 +83,21 @@ public class UserJdbcDao implements UserDao{
     }
 
     @Override
-    public User read(String login) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement("select id,login,password,email from crud1.users where login = ?");
-        stmt.setString(1, login);
-        stmt.execute();
-        ResultSet result = stmt.getResultSet();
+    public User read(String login) {
         User user = new User();
-        if (result.next()) {
-            user.setId(result.getLong(1));
-            user.setLogin(result.getString(2));
-            user.setPassword(result.getString(3));
-            user.setEmail(result.getString(4));
+        try {
+            PreparedStatement stmt = connection.prepareStatement("select id,login,password,email from crud1.users where login = ?");
+            stmt.setString(1, login);
+            stmt.execute();
+            ResultSet result = stmt.getResultSet();
+            if (result.next()) {
+                user.setId(result.getLong(1));
+                user.setLogin(result.getString(2));
+                user.setPassword(result.getString(3));
+                user.setEmail(result.getString(4));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return user;
     }

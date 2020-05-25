@@ -11,7 +11,7 @@ public interface UserDao {
     Long update(String login, String password, String email) throws SQLException;
     List<User> read() throws SQLException;
     boolean existUser(String login) throws SQLException;
-    User read(String login) throws SQLException;
+    User read(String login);
     void delete(User user) throws SQLException;
     void deleteAll() throws SQLException;
 }

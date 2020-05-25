@@ -20,7 +20,6 @@
     <input type="submit" name="add" value="add1">
     <input type="submit" name="edit" value="edit1">
     <input type="submit" name="delete" value="delete1">
-<%--    <form action="http://ab-w.net/info.php" method="post" name="drop_down_box">--%>
         <select name="className" size="2">
             <%
                 String className1 = "DAO.UserJdbcDao";
@@ -36,22 +35,9 @@
                     className = className1;
                 }
             %>
-<%--
-            %>
-            Hello, world !
-            <%            } else {
-            %>
-            Hello, world ! I'm <%= name%>
-            <%
-                }
-            %>
-            <option value="DAO.UserJdbcDao">DAO.UserJdbcDao</option>
-            <option selected="selected" value="DAO.UserHibernateDao">DAO.UserHibernateDao</option>
---%>
             <option value="<%= className%>"><%= className%></option>
             <option selected="selected" value="<%= classNameSelected%>"><%= classNameSelected%></option>
         </select>
-<%--    </form>--%>
 </form>
 <br>
 <table>
