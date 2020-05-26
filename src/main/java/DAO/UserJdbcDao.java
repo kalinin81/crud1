@@ -43,6 +43,29 @@ public class UserJdbcDao implements UserDao{
         }
         return id;
     }
+    @Override
+    public Long insert(String login, String password, String email, String role)  {
+        Long id = 0L;
+        try {
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO crud1.users (email, login, password) VALUES (?, ?, ?, ?)");
+            stmt.setString(3, password);
+            stmt.setString(1, email);
+            stmt.setString(2, login);
+            stmt.setString(4, role);
+            stmt.execute();
+            stmt = connection.prepareStatement("select id from crud1.users where login = ?");
+            stmt.setString(1, login);
+            stmt.execute();
+            ResultSet result = stmt.getResultSet();
+            id = 0L;
+            if (result.next()) {
+                id = result.getLong(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
 
     @Override
     public Long update(Long id, String login, String password, String email)   {
@@ -130,6 +153,28 @@ public class UserJdbcDao implements UserDao{
         try {
             PreparedStatement stmt = connection.prepareStatement("select id,login,password,email from crud1.users where login = ?");
             stmt.setString(1, login);
+            stmt.execute();
+            ResultSet result = stmt.getResultSet();
+            user = new User();
+            if (result.next()) {
+                user.setId(result.getLong(1));
+                user.setLogin(result.getString(2));
+                user.setPassword(result.getString(3));
+                user.setEmail(result.getString(4));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+    @Override
+    public User read(String login, String password) {
+        User user = null;
+        try {
+            PreparedStatement stmt = connection.prepareStatement("select id,login,password,email from crud1.users where login = ? and password = ?");
+            stmt.setString(1, login);
+            stmt.setString(2, password);
             stmt.execute();
             ResultSet result = stmt.getResultSet();
             user = new User();

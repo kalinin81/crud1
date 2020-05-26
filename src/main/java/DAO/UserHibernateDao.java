@@ -21,12 +21,25 @@ public class UserHibernateDao implements UserDao{
         }
         return userHibernateDao;
     }
+    private UserHibernateDao() {
+
+    }
     @Override
     public Long insert(String login, String password, String email) {
         Long id = 0L;
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         id = (Long) session.save(new User(login, password, email));
+        transaction.commit();
+        session.close();
+        return id;
+    }
+    @Override
+    public Long insert(String login, String password, String email, String role) {
+        Long id = 0L;
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        id = (Long) session.save(new User(login, password, email, role));
         transaction.commit();
         session.close();
         return id;
@@ -66,6 +79,16 @@ public class UserHibernateDao implements UserDao{
         Session session = sessionFactory.openSession();
         Criteria criteria = session.createCriteria(User.class);
         criteria.add(Restrictions.eq("login", login));
+        User user = (User) criteria.uniqueResult();
+        session.close();
+        return user;
+    }
+    @Override
+    public User read(String login, String password) {
+        Session session = sessionFactory.openSession();
+        Criteria criteria = session.createCriteria(User.class);
+        criteria.add(Restrictions.eq("login", login));
+        criteria.add(Restrictions.eq("password", password));
         User user = (User) criteria.uniqueResult();
         session.close();
         return user;

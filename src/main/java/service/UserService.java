@@ -15,12 +15,11 @@ public class UserService {
     private UserDao userDao;
 
     public static UserService getInstance() {
-        String className = "DAO.UserHibernateDao";
         try {
             if (userService == null) {
                 userService = new UserService();
             }
-            userService.userDao = UserDaoFactory.getUserDao(className);
+            userService.userDao = UserDaoFactory.getUserDao();
         } catch (Exception e) {
             e.printStackTrace();
         }
