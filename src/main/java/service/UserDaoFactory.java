@@ -6,6 +6,7 @@ import DAO.UserJdbcDao;
 
 public class UserDaoFactory {
     public static UserDao getUserDao(String daoType) {
+        //property,
         UserDao userDao;
         if (daoType.equals("DAO.UserJdbcDao")) {
             userDao = UserJdbcDao.getInstance();
