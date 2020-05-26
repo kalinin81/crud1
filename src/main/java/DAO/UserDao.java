@@ -6,12 +6,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface UserDao {
-    //UserHibernateDao getInstance();
-    Long insert(String login, String password, String email) throws SQLException;
-    Long update(String login, String password, String email) throws SQLException;
+    Long insert(String login, String password, String email);
+    Long update(Long id, String login, String password, String email);
     List<User> read() throws SQLException;
-    boolean existUser(String login) throws SQLException;
+    boolean existUser(Long id);
+    boolean existUser(String login);
+    User read(Long id);
     User read(String login);
-    void delete(User user) throws SQLException;
-    void deleteAll() throws SQLException;
+    void delete(User user);
+    void deleteAll();
 }
