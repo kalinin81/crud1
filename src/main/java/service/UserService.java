@@ -5,7 +5,6 @@ import DAO.UserHibernateDao;
 import DAO.UserJdbcDao;
 import model.User;
 
-import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +21,6 @@ public class UserService {
                 userService = new UserService();
             }
             userService.userDao = UserDaoFactory.getUserDao(className);
-/*
-            if (className.equals("DAO.UserJdbcDao")) {
-                userService.userDao = UserJdbcDao.getInstance();
-            } else {
-                userService.userDao = UserHibernateDao.getInstance();
-            }
-*/
         } catch (Exception e) {
             e.printStackTrace();
         }
